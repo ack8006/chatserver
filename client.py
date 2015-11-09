@@ -3,7 +3,7 @@ import socket
 import select
 
 
-def chat_client():
+def chat_client(chat_name):
     if len(sys.argv) < 3:
         print 'Usage: python client.py hostname port'
         sys.exit()
@@ -18,6 +18,8 @@ def chat_client():
 
     try:
         s.connect((host, port))
+        #set chat name
+        s.send(str(chat_name))
     except:
         print 'Unable to connect'
         sys.exit()
@@ -39,22 +41,18 @@ def chat_client():
                     print '\nDisconnected from chat server'
                     sys.exit()
                 else:
-                    #print data
                     sys.stdout.write(data)
-                    sys.stdout.write('[Me] ')
-                    sys.stdout.flush()
+                    sys.stdout.write('[Me] '); sys.stdout.flush()
             else:
                 #user entered a message
                 msg = sys.stdin.readline()
                 s.send(msg)
-                sys.stdout.write('[Me] ')
-                sys.stdout.flush()
-
-
+                sys.stdout.write('[Me] '); sys.stdout.flush()
 
 
 
 
 if __name__ == '__main__':
-    chat_client()
+    chat_name = raw_input('Please Enter Chat Name ')
+    chat_client(chat_name)
     #sys.exit(chat_client())
